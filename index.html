@@ -11,10 +11,10 @@
 
   <script>
     document.getElementById('getDataButton').addEventListener('click', () => {
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // Используйте прокси-сервер, который обходит CORS
+      const proxyUrl = 'http://izaceziri.pythonanywhere.com/proxy?url='; // ваш прокси-сервер
       const targetUrl = 'https://www.tiktok.com/foryou'; // Замените на целевой URL, к которому вы хотите отправлять запросы
 
-      fetch(proxyUrl + targetUrl)
+      fetch(proxyUrl + encodeURIComponent(targetUrl))
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
