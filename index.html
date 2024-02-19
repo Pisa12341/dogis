@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Прокси-сервер</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Прокси-запрос через сайт</title>
 </head>
 <body>
-    <h1>Прокси-сервер</h1>
-    <form action="/proxy" method="get">
-        <label for="url">Введите URL-адрес:</label><br>
-        <input type="text" id="url" name="url" size="50" required><br><br>
-        <button type="submit">Отправить</button>
-    </form>
+  <button id="getDataButton">Получить данные через прокси</button>
+  <div id="responseData"></div>
 
-    <?php
-    if(isset($_GET['url'])) {
-        $url = $_GET['url'];
-        $data = file_get_contents($url);
-        if($data !== false) {
-            echo "<h2>Результат:</h2>";
-            echo "<pre>" . htmlspecialchars($data) . "</pre>";
-        } else {
-            echo "<p>Не удалось получить данные по указанному URL.</p>";
-        }
-    }
-    ?>
+  <script>
+    document.getElementById('getDataButton').addEventListener('click', () => {
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // Используйте прокси-сервер, который обходит CORS
+      const targetUrl = 'https://example.com/api/data'; // Замените на целевой URL, к которому вы хотите отправлять запросы
+
+      fetch(proxyUrl + targetUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('responseData').innerText = JSON.stringify(data);
+        })
+        .catch(error => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+    });
+  </script>
 </body>
 </html>
